@@ -7,6 +7,8 @@ import { ConcertModule } from './concert/concert.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { Concert } from './concert/concert.entity';
+import { ReservationModule } from './reservation/reservation.module';
+import { Reservation } from './reservation/reservation.entity';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import { Concert } from './concert/concert.entity';
       username: 'root',
       password: 'pass1234',
       database: 'concert_db',
-      entities: [User, Concert],
+      entities: [User, Concert, Reservation],
       synchronize: true,
     }),
     JwtModule.register({
@@ -27,6 +29,7 @@ import { Concert } from './concert/concert.entity';
     AuthModule,
     UserModule,
     ConcertModule,
+    ReservationModule,
   ],
   providers: [JwtStrategy],
 })

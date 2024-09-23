@@ -1,22 +1,43 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '../auth/auth.guard';
-import { RolesGuard } from '../auth/roles.guard';
-import { Roles } from '../auth/roles.decorator';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { Controller, Post, Delete, Get, Param, Body } from '@nestjs/common';
+import { ConcertService } from './concert.service';
+import { CreateConcertDto } from './dto/create-concert.dto';
+import { ApiBody } from '@nestjs/swagger';
 
 @Controller('concerts')
-@UseGuards(AuthGuard, RolesGuard)
-@ApiBearerAuth('JWT-auth')
-export class ConcertController {
+export class ConcertsController {
+  constructor(private concertsService: ConcertService) {}
+
   @Get()
-  @Roles('user')
   getAllConcerts() {
-    return 'This is a route accessible to all authenticated users';
+    return this.concertsService.getAllConcerts();
   }
 
-  @Get('admin')
-  @Roles('admin')
-  getAdminConcerts() {
-    return 'This is an admin-only route';
+  @Get(':id')
+  getConcertById(@Param('id') id: number) {
+    return this.concertsService.getConcertById(id);
+  }
+
+  @Post('create')
+  @ApiBody({ type: CreateConcertDto })
+  @ApiBody({
+    schema: {
+      example: {
+        name: 'concert 1',
+        description: 'concert description',
+        totalSeats: 400,
+      },
+    },
+  })
+  createConcert(@Body() concertData: CreateConcertDto) {
+    return this.concertsService.createConcert(
+      concertData.name,
+      concertData.description,
+      concertData.totalSeats,
+    );
+  }
+
+  @Delete(':id')
+  deleteConcert(@Param('id') id: number) {
+    return this.concertsService.deleteConcert(id);
   }
 }

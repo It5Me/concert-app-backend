@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Reservation } from 'src/reservation/reservation.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class User {
@@ -13,4 +14,9 @@ export class User {
 
   @Column({ default: 'user' })
   role: 'user' | 'admin';
+
+  @OneToMany(() => Reservation, (reservation) => reservation.user, {
+    cascade: true,
+  })
+  reservations: Reservation[];
 }
