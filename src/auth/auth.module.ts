@@ -4,11 +4,11 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
-import { UserModule } from '../user/user.module'; // Import UserModule
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
-    UserModule, // Make sure it's imported here if UserService is used
+    UserModule,
     PassportModule,
     JwtModule.register({
       secret: 'jwtforauth',

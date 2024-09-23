@@ -1,4 +1,13 @@
-import { Controller, Post, Delete, Get, Param, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Delete,
+  Get,
+  Param,
+  Body,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { ConcertService } from './concert.service';
 import { CreateConcertDto } from './dto/create-concert.dto';
 import { ApiBody } from '@nestjs/swagger';
@@ -37,7 +46,19 @@ export class ConcertsController {
   }
 
   @Delete(':id')
-  deleteConcert(@Param('id') id: number) {
-    return this.concertsService.deleteConcert(id);
+  async deleteConcert(@Param('id') id: number) {
+    try {
+      return await this.concertsService.deleteConcert(id);
+    } catch (error) {
+      throw new HttpException(
+        { status: HttpStatus.FORBIDDEN, error: error.message },
+        HttpStatus.FORBIDDEN,
+      );
+    }
+  }
+
+  @Get('/reservations/:id')
+  getConcertAndReservation(@Param('id') id: number) {
+    return this.concertsService.findReservationsByConcertId(id);
   }
 }

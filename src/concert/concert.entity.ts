@@ -20,6 +20,7 @@ export class Concert {
 
   @OneToMany(() => Reservation, (reservation) => reservation.concert, {
     cascade: true,
+    onDelete: 'CASCADE',
   })
   reservations: Reservation[];
 }

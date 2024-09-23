@@ -1,13 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Concert } from './concert.entity';
+import { Reservation } from 'src/reservation/reservation.entity';
+import { ReservationsService } from 'src/reservation/reservation.service';
 
 @Injectable()
 export class ConcertService {
   constructor(
     @InjectRepository(Concert)
     private concertRepository: Repository<Concert>,
+
+    @InjectRepository(Concert)
+    private reservationRepository: Repository<Reservation>,
+
+    private readonly reservationService: ReservationsService,
   ) {}
 
   async createConcert(
@@ -23,11 +31,8 @@ export class ConcertService {
     return this.concertRepository.save(concert);
   }
 
-  async deleteConcert(id: number): Promise<void> {
-    const result = await this.concertRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Concert with ID ${id} not found`);
-    }
+  async deleteConcert(concertId: number) {
+    return this.concertRepository.delete({ id: concertId });
   }
 
   async getAllConcerts(): Promise<Concert[]> {
@@ -40,5 +45,9 @@ export class ConcertService {
       throw new NotFoundException(`Concert with ID ${id} not found`);
     }
     return concert;
+  }
+
+  async findReservationsByConcertId(concertId: number): Promise<Reservation[]> {
+    return this.reservationService.getReservationsByConcertId(concertId);
   }
 }
