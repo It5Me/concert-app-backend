@@ -35,8 +35,23 @@ export class ConcertService {
     return this.concertRepository.delete({ id: concertId });
   }
 
-  async getAllConcerts(): Promise<Concert[]> {
-    return this.concertRepository.find();
+  async getConcerts(page: number, limit: number) {
+    const offset = (page - 1) * limit;
+    const [concerts, totalConcerts] = await this.concertRepository.findAndCount(
+      {
+        skip: offset,
+        take: limit,
+      },
+    );
+
+    const totalPages = Math.ceil(totalConcerts / limit);
+
+    return {
+      concerts,
+      totalConcerts,
+      currentPage: page,
+      totalPages,
+    };
   }
 
   async getConcertById(id: number): Promise<Concert> {

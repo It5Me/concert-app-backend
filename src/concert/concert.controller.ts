@@ -7,6 +7,7 @@ import {
   Body,
   HttpException,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { ConcertService } from './concert.service';
 import { CreateConcertDto } from './dto/create-concert.dto';
@@ -17,8 +18,11 @@ export class ConcertsController {
   constructor(private concertsService: ConcertService) {}
 
   @Get()
-  getAllConcerts() {
-    return this.concertsService.getAllConcerts();
+  getConcerts(@Query('page') page: string, @Query('limit') limit: string) {
+    const pageNumber = parseInt(page, 10) || 1;
+    const limitNumber = parseInt(limit, 10) || 10;
+
+    return this.concertsService.getConcerts(pageNumber, limitNumber);
   }
 
   @Get(':id')
