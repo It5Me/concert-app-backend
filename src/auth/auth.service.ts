@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Reservation } from 'src/reservation/reservation.entity';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
@@ -10,8 +11,17 @@ export class AuthService {
     private readonly userService: UserService,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
+  async validateUser(
+    username: string,
+    pass: string,
+  ): Promise<{
+    id: number;
+    username: string;
+    role: 'user' | 'admin';
+    reservations: Reservation[];
+  } | null> {
     const user = await this.userService.findOne(username);
+
     if (user && user.password === pass) {
       const { password, ...result } = user;
       return result;
@@ -20,11 +30,9 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = {
-      username: user.username,
-      sub: user.id,
-      role: user.role,
+    const payload = { username: user.username, sub: user.id, role: user.role };
+    return {
+      access_token: this.jwtService.sign(payload),
     };
-    return this.jwtService.sign(payload);
   }
 }

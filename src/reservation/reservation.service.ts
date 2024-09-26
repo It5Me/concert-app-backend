@@ -25,6 +25,21 @@ export class ReservationsService {
 
     if (existingReservation && existingReservation.action === 'canceled') {
       existingReservation.action = 'reserved';
+
+      const concert = await this.concertRepository.findOne({
+        where: { id: concertId },
+      });
+      if (!concert) {
+        throw new Error('Concert not found');
+      }
+
+      if (concert.totalSeats <= 0) {
+        throw new Error('No available seats for this concert');
+      }
+
+      concert.totalSeats--;
+      await this.concertRepository.save(concert);
+
       await this.reservationRepository.save(existingReservation);
       return { message: 'Reservation updated to active' };
     }
@@ -36,15 +51,19 @@ export class ReservationsService {
       throw new Error('Concert not found');
     }
 
+    if (concert.totalSeats <= 0) {
+      throw new Error('No available seats for this concert');
+    }
+
     const newReservation = this.reservationRepository.create({
       concert: concert,
       user: { id: userId },
       action: 'reserved',
     });
 
-    concert.reservedSeats++;
-    await this.concertRepository.save(concert);
+    concert.totalSeats--;
 
+    await this.concertRepository.save(concert);
     return this.reservationRepository.save(newReservation);
   }
 
@@ -80,7 +99,10 @@ export class ReservationsService {
     await this.reservationRepository.save(existingReservation);
 
     const concert = existingReservation.concert;
+
     concert.reservedSeats = Math.max(0, concert.reservedSeats - 1);
+    concert.totalSeats += 1;
+
     await this.concertRepository.save(concert);
 
     return { message: 'Reservation canceled successfully' };

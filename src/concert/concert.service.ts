@@ -35,22 +35,41 @@ export class ConcertService {
     return this.concertRepository.delete({ id: concertId });
   }
 
-  async getConcerts(page: number, limit: number) {
+  async getConcerts(page: number, limit: number): Promise<any> {
     const offset = (page - 1) * limit;
+
     const [concerts, totalConcerts] = await this.concertRepository.findAndCount(
       {
         skip: offset,
         take: limit,
+        relations: ['reservations'],
       },
     );
+
+    const seatData = await this.concertRepository
+      .createQueryBuilder('concert')
+      .select('SUM(concert.totalSeats)', 'totalSeats')
+      .addSelect(
+        "SUM(CASE WHEN reservation.action = 'reserved' THEN 1 ELSE 0 END)",
+        'totalReserved',
+      )
+      .addSelect(
+        "SUM(CASE WHEN reservation.action = 'canceled' THEN 1 ELSE 0 END)",
+        'totalCanceled',
+      )
+      .leftJoin('concert.reservations', 'reservation')
+      .getRawOne();
 
     const totalPages = Math.ceil(totalConcerts / limit);
 
     return {
       concerts,
       totalConcerts,
-      currentPage: page,
       totalPages,
+      currentPage: page,
+      totalSeats: seatData?.totalSeats || 0,
+      totalReserved: seatData?.totalReserved || 0,
+      totalCanceled: seatData?.totalCanceled || 0,
     };
   }
 
