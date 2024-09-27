@@ -43,6 +43,9 @@ export class ConcertService {
         skip: offset,
         take: limit,
         relations: ['reservations'],
+        order: {
+          createdAt: 'DESC',
+        },
       },
     );
 
