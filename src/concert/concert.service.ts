@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Concert } from './concert.entity';
 import { Reservation } from 'src/reservation/reservation.entity';
 import { ReservationsService } from 'src/reservation/reservation.service';
+import { CreateConcertDto } from './dto/create-concert.dto';
 
 @Injectable()
 export class ConcertService {
@@ -18,16 +19,8 @@ export class ConcertService {
     private readonly reservationService: ReservationsService,
   ) {}
 
-  async createConcert(
-    name: string,
-    description: string,
-    totalSeats: number,
-  ): Promise<Concert> {
-    const concert = this.concertRepository.create({
-      name,
-      description,
-      totalSeats,
-    });
+  async createConcert(createConcertDto: CreateConcertDto): Promise<Concert> {
+    const concert = this.concertRepository.create(createConcertDto);
     return this.concertRepository.save(concert);
   }
 

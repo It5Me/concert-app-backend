@@ -1,4 +1,5 @@
-import { Reservation } from 'src/reservation/reservation.entity';
+// src/concert/concert.entity.ts
+
 import {
   Entity,
   Column,
@@ -6,22 +7,23 @@ import {
   OneToMany,
   CreateDateColumn,
 } from 'typeorm';
+import { Reservation } from 'src/reservation/reservation.entity';
 
 @Entity()
 export class Concert {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @Column()
+  @Column({ type: 'text' })
   description: string;
 
-  @Column()
+  @Column({ type: 'int' })
   totalSeats: number;
 
-  @Column({ default: 0 })
+  @Column({ type: 'int', default: 0 })
   reservedSeats: number;
 
   @CreateDateColumn()

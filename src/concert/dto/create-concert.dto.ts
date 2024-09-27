@@ -1,11 +1,14 @@
 // src/concert/dto/create-concert.dto.ts
-import { IsString, IsInt, Min } from 'class-validator';
+
+import { IsString, IsNotEmpty, IsInt, Min } from 'class-validator';
 
 export class CreateConcertDto {
   @IsString()
+  @IsNotEmpty()
   readonly name: string;
 
   @IsString()
+  @IsNotEmpty()
   readonly description: string;
 
   @IsInt()

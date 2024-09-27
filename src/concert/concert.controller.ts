@@ -49,11 +49,7 @@ export class ConcertsController {
     },
   })
   createConcert(@Body() concertData: CreateConcertDto) {
-    return this.concertsService.createConcert(
-      concertData.name,
-      concertData.description,
-      concertData.totalSeats,
-    );
+    return this.concertsService.createConcert(concertData);
   }
 
   @Delete(':id')
