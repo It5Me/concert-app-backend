@@ -78,6 +78,9 @@ export class ReservationsService {
     return this.reservationRepository.find({
       relations: ['user', 'concert'],
       select: ['createdAt', 'action'],
+      order: {
+        createdAt: 'DESC',
+      },
     });
   }
 
