@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Reservation } from './reservation.entity';
-import { Concert } from 'src/concert/concert.entity';
+import { Concert } from '../concert/concert.entity';
 
 @Injectable()
 export class ReservationsService {

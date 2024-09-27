@@ -1,5 +1,3 @@
-// src/concert/concert.entity.ts
-
 import {
   Entity,
   Column,
@@ -7,7 +5,7 @@ import {
   OneToMany,
   CreateDateColumn,
 } from 'typeorm';
-import { Reservation } from 'src/reservation/reservation.entity';
+import { Reservation } from '../reservation/reservation.entity';
 
 @Entity()
 export class Concert {

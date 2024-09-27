@@ -3,9 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Concert } from './concert.entity';
 import { ConcertsController } from './concert.controller';
 import { ConcertService } from './concert.service';
-import { Reservation } from 'src/reservation/reservation.entity';
-import { ReservationModule } from 'src/reservation/reservation.module';
-import { ReservationsService } from 'src/reservation/reservation.service';
+import { Reservation } from '../reservation/reservation.entity';
+import { ReservationModule } from '../reservation/reservation.module';
+import { ReservationsService } from '../reservation/reservation.service';
 
 @Module({
   imports: [

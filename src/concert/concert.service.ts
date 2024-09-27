@@ -3,8 +3,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Concert } from './concert.entity';
-import { Reservation } from 'src/reservation/reservation.entity';
-import { ReservationsService } from 'src/reservation/reservation.service';
+import { Reservation } from '../reservation/reservation.entity';
+import { ReservationsService } from '../reservation/reservation.service';
 import { CreateConcertDto } from './dto/create-concert.dto';
 
 @Injectable()

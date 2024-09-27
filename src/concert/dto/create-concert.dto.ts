@@ -1,5 +1,3 @@
-// src/concert/dto/create-concert.dto.ts
-
 import { IsString, IsNotEmpty, IsInt, Min } from 'class-validator';
 
 export class CreateConcertDto {

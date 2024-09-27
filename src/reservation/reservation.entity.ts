@@ -1,3 +1,5 @@
+import { Concert } from '../concert/concert.entity';
+import { User } from '../user/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -5,8 +7,6 @@ import {
   Column,
   CreateDateColumn,
 } from 'typeorm';
-import { User } from '../user/user.entity';
-import { Concert } from '../concert/concert.entity';
 
 @Entity()
 export class Reservation {
