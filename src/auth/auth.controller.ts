@@ -26,6 +26,6 @@ export class AuthController {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return this.authService.login(user); // This line should not be reached if validateUser returns null
+    return this.authService.login(user);
   }
 }
