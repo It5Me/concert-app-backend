@@ -14,8 +14,6 @@ export class ConcertService {
     private concertRepository: Repository<Concert>,
 
     @InjectRepository(Concert)
-    private reservationRepository: Repository<Reservation>,
-
     private readonly reservationService: ReservationsService,
   ) {}
 

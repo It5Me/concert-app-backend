@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConcertsController } from './concert.controller';
+import { ConcertController } from './concert.controller';
 import { ConcertService } from './concert.service';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../auth/roles.guard';
 import { CreateConcertDto } from './dto/create-concert.dto';
 import { HttpException } from '@nestjs/common';
 
-describe('ConcertsController', () => {
-  let controller: ConcertsController;
+describe('ConcertController', () => {
+  let controller: ConcertController;
   let service: ConcertService;
 
   const mockConcertService = {
@@ -20,7 +20,7 @@ describe('ConcertsController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [ConcertsController],
+      controllers: [ConcertController],
       providers: [
         {
           provide: ConcertService,
@@ -34,7 +34,7 @@ describe('ConcertsController', () => {
       .useValue(jest.fn(() => true))
       .compile();
 
-    controller = module.get<ConcertsController>(ConcertsController);
+    controller = module.get<ConcertController>(ConcertController);
     service = module.get<ConcertService>(ConcertService);
   });
 

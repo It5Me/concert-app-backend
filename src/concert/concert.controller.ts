@@ -19,8 +19,8 @@ import { AuthGuard } from '@nestjs/passport';
 
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 @Controller('concerts')
-export class ConcertsController {
-  constructor(private concertsService: ConcertService) {}
+export class ConcertController {
+  constructor(private concertService: ConcertService) {}
 
   @Get()
   @Roles('user', 'admin')
@@ -28,12 +28,12 @@ export class ConcertsController {
     const pageNumber = parseInt(page, 10) || 1;
     const limitNumber = parseInt(limit, 10) || 10;
 
-    return this.concertsService.getConcerts(pageNumber, limitNumber);
+    return this.concertService.getConcerts(pageNumber, limitNumber);
   }
 
   @Get(':id')
   getConcertById(@Param('id') id: number) {
-    return this.concertsService.getConcertById(id);
+    return this.concertService.getConcertById(id);
   }
 
   @Post('create')
@@ -49,14 +49,14 @@ export class ConcertsController {
     },
   })
   createConcert(@Body() concertData: CreateConcertDto) {
-    return this.concertsService.createConcert(concertData);
+    return this.concertService.createConcert(concertData);
   }
 
   @Delete(':id')
   @Roles('admin')
   async deleteConcert(@Param('id') id: number) {
     try {
-      return await this.concertsService.deleteConcert(id);
+      return await this.concertService.deleteConcert(id);
     } catch (error) {
       throw new HttpException(
         { status: HttpStatus.FORBIDDEN, error: error.message },
@@ -67,6 +67,6 @@ export class ConcertsController {
 
   @Get('/reservations/:id')
   getConcertAndReservation(@Param('id') id: number) {
-    return this.concertsService.findReservationsByConcertId(id);
+    return this.concertService.findReservationsByConcertId(id);
   }
 }
