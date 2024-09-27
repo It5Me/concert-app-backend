@@ -9,16 +9,21 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { Concert } from './concert/concert.entity';
 import { ReservationModule } from './reservation/reservation.module';
 import { Reservation } from './reservation/reservation.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
-      port: 5432,
-      username: 'root',
-      password: 'pass1234',
-      database: 'concert_db',
+      port: parseInt(process.env.DB_PORT, 10),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [User, Concert, Reservation],
       synchronize: true,
     }),
