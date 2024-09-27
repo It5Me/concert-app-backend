@@ -59,6 +59,25 @@ $ npm run test
  Please use port 8080
 ```
 
-### Open Swagger
+## Swagger Documentation
 
-Open [http://localhost:8080/api](http://localhost:8080/api) with your browser to see the result.
+Open Swagger UI at [http://localhost:8080/api](http://localhost:8080/api) in your browser to interact with the API and view the results.
+
+### User Management
+
+You can create both **User** and **Admin** roles using the Swagger UI. Alternatively, you can use the predefined accounts provided below:
+
+#### Admin Role
+
+```bash
+Username: admin  
+Password: password
+```
+
+#### User Role
+
+```bash
+Username: user  
+Password: password
+```
+> ⚠️ **Important**: **User** role cannot switch to the **Admin** mode.

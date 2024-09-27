@@ -34,7 +34,10 @@ export class UserController {
       },
     },
   })
-  async createAdmin(@Body() body: { username: string; password: string }) {
-    return this.userService.createAdmin(body.username, body.password);
+  async createAdmin(@Body() createUserDto: CreateUserDto) {
+    return this.userService.createAdmin(
+      createUserDto.username,
+      createUserDto.password,
+    );
   }
 }
