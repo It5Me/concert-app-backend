@@ -1,6 +1,10 @@
-import { Controller, Post, Param, Get, Patch } from '@nestjs/common';
+import { Controller, Post, Param, Get, Patch, UseGuards } from '@nestjs/common';
 import { ReservationsService } from './reservation.service';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { AuthGuard } from '@nestjs/passport';
+import { Roles } from 'src/auth/roles.decorator';
 
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 @Controller('reservations')
 export class ReservationsController {
   constructor(private reservationsService: ReservationsService) {}
@@ -23,6 +27,7 @@ export class ReservationsController {
     return this.reservationsService.getUserReservations(userId);
   }
 
+  @Roles('admin')
   @Get('admin/reservations')
   getAllReservationsForAdmin() {
     return this.reservationsService.getReservationsWithDetails();

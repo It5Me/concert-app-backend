@@ -8,16 +8,22 @@ import {
   HttpException,
   HttpStatus,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ConcertService } from './concert.service';
 import { CreateConcertDto } from './dto/create-concert.dto';
 import { ApiBody } from '@nestjs/swagger';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 @Controller('concerts')
 export class ConcertsController {
   constructor(private concertsService: ConcertService) {}
 
   @Get()
+  @Roles('user', 'admin')
   getConcerts(@Query('page') page: string, @Query('limit') limit: string) {
     const pageNumber = parseInt(page, 10) || 1;
     const limitNumber = parseInt(limit, 10) || 10;
@@ -31,6 +37,7 @@ export class ConcertsController {
   }
 
   @Post('create')
+  @Roles('admin')
   @ApiBody({ type: CreateConcertDto })
   @ApiBody({
     schema: {
@@ -50,6 +57,7 @@ export class ConcertsController {
   }
 
   @Delete(':id')
+  @Roles('admin')
   async deleteConcert(@Param('id') id: number) {
     try {
       return await this.concertsService.deleteConcert(id);
