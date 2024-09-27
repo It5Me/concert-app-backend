@@ -3,8 +3,11 @@ import { ReservationsService } from './reservation.service';
 import { RolesGuard } from '../auth/roles.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../auth/roles.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @UseGuards(AuthGuard('jwt'), RolesGuard)
+@ApiTags('reservetion')
+@ApiBearerAuth('JWT-auth')
 @Controller('reservations')
 export class ReservationsController {
   constructor(private reservationsService: ReservationsService) {}

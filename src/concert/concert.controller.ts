@@ -12,12 +12,14 @@ import {
 } from '@nestjs/common';
 import { ConcertService } from './concert.service';
 import { CreateConcertDto } from './dto/create-concert.dto';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AuthGuard } from '@nestjs/passport';
 
 @UseGuards(AuthGuard('jwt'), RolesGuard)
+@ApiTags('concerts')
+@ApiBearerAuth('JWT-auth')
 @Controller('concerts')
 export class ConcertController {
   constructor(private concertService: ConcertService) {}
